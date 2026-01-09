@@ -1,0 +1,89 @@
+<main>
+  <div class="modalLogin">
+    <div class="titulo">
+      <p>Login</p>
+    </div>
+    <form class="formulario" action="">
+      <div>
+        <div class="campos_login">
+          <p>Digite seu email:</p>
+          <input type="email" name="email" [(ngModel)]="email" required />
+        </div>
+        <div class="campos_login">
+          <p>Digite sua senha:</p>
+          <input type="password" name="senha" [(ngModel)]="senha" required />
+        </div>
+      </div>
+      <div class="botoes">
+        <button class="botaoLogar" (click)="enviar()">Logar</button>
+        <button class="botaoRegistrar">Registrar</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<style>
+  * {
+    margin: 0;
+  }
+
+  .modalLogin {
+    background-color: #cccccc;
+    width: 50vw;
+    height: 30vw;
+
+    & .titulo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #979797;
+      margin-bottom: 5vw;
+
+      & p {
+        font-size: 30px;
+        font-weight: bold;
+      }
+    }
+
+    & .campos_login {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      & p {
+        font-size: 20px;
+      }
+
+      & input {
+        width: 20vw;
+        height: 25px;
+      }
+    }
+
+    & .botoes {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+      gap: 6.9vw;
+
+      & button {
+        width: 6.8vw;
+        height: 1.7vw;
+        font-size: 16px;
+      }
+
+      & .botaoLogar:hover {
+        background-color: #0c6d08;
+        border: none;
+        color: #ffff;
+      }
+
+      & .botaoRegistrar:hover {
+        background-color: #172ca3;
+        border: none;
+        color: #ffff;
+      }
+    }
+  }
+</style>
