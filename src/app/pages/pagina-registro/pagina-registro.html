@@ -1,14 +1,61 @@
 <main class="pagina-registro">
-    <div class="campo-principal">
-        <div class="cabecalho">
-            <p>Registre-se</p>
-        </div>
-        <div>
-            <form action="">
-                <div class="label">
-                    <app-label-component text="Nome" [required]="true"/>
-                </div>
-            </form>
-        </div>
+  <div class="campo-principal">
+    <div class="cabecalho">
+      <p>Registre-se</p>
     </div>
+    <div class="formulario">
+      <form (ngSubmit)="enviaRegistro()" #form="ngForm">
+        <div class="campos">
+          <app-label-component text="Nome" for="nomeRegistro" [required]="true" />
+          <input
+            class="campos--input"
+            type="text"
+            [(ngModel)]="nome"
+            name="nome"
+            id="nomeRegistro"
+            required
+          />
+        </div>
+        <div class="campos">
+          <app-label-component text="Email" for="emailRegistro" [required]="true" />
+          <input
+            class="campos--input"
+            type="email"
+            [(ngModel)]="email"
+            name="email"
+            id="emailRegistro"
+            required
+          />
+        </div>
+        <div class="campos">
+          <app-label-component text="Telefone" for="telefoneRegistro" [required]="true" />
+          <input
+            class="campos--input"
+            type="tel"
+            [(ngModel)]="telefone"
+            name="telefone"
+            id="telefoneRegistro"
+            required
+          />
+        </div>
+        <div class="campos">
+          <app-label-component text="Senha" for="senhaRegistro" [required]="true" />
+          <input
+            class="campos--input"
+            type="password"
+            [(ngModel)]="senha"
+            name="senha"
+            id="senhaRegistro"
+            required
+          />
+        </div>
+        <div class="botao">
+          <button class="botao--registrar" type="submit">Registrar</button>
+          <button class="botao--retornar" type="button" (click)="voltarPaginaLogin()">
+            Voltar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </main>

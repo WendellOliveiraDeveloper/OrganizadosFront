@@ -1,0 +1,56 @@
+main {
+  display: flex;
+  justify-content: center;
+  margin-top: 70px;
+
+  & .campo-principal {
+    background-color: #d6d6d6;
+    width: 500px;
+    height: 370px;
+
+    & .cabecalho {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+      border-bottom: 1px solid black;
+    }
+  }
+
+  .formulario {
+    & .campos {
+      display: flex;
+      flex-direction: column;
+      margin-top: 10px;
+      margin-left: 78px;
+
+      &--input {
+        height: 20px;
+        width: 330px;
+        margin-top: 5px;
+      }
+    }
+
+    & .botao {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+      border-radius: 8px;
+
+      &--registrar {
+        background-color: #3ad63a;
+        border: none;
+        cursor: pointer;
+        color: #ffff;
+        width: 90px;
+        height: 20px;
+        font-size: 15px;
+      }
+
+      &--retornar {
+        width: 90px;
+        height: 20px;
+        font-size: 15px;
+      }
+    }
+  }
+}

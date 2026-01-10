@@ -3,7 +3,7 @@
     <div class="titulo">
       <p>Login</p>
     </div>
-    <form class="formulario" action="">
+    <form class="formulario" (ngSubmit)="enviar()" #form="ngForm">
       <div>
         <div class="campos_login">
           <label>Digite seu email:</label>
@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="botoes">
-        <button class="botaoLogar" (click)="enviar()">Logar</button>
+        <button class="botaoLogar" type="submit">Logar</button>
         <button class="botaoRegistrar" (click)="registrarUser()">Registrar</button>
       </div>
     </form>

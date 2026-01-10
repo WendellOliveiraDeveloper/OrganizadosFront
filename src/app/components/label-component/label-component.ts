@@ -6,9 +6,10 @@ import { CommonModule } from '@angular/common';
   selector: 'app-label-component',
   imports: [CommonModule],
   templateUrl: './label-component.html',
-  styleUrls: ['./label-component.css'],
+  styleUrls: ['./label-component.scss'],
 })
 export class LabelComponent {
   @Input() required: boolean = false;
   @Input() text: string = '';
+  @Input() for: string = '';
 }
