@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { EnviaFormularioService } from '../../services/envia-formulario';
 import { Router } from '@angular/router';
 import { Modal } from '../modal/modal';
+import { CompartilhamentoService } from '../../services/compartilhamento-service';
 
 @Component({
   selector: 'app-login',
@@ -18,16 +19,25 @@ export class Login {
   modalAberto: boolean = false;
   erroMensagem!: string;
 
-  constructor(private enviaLoginRequest: EnviaFormularioService, private router: Router) {}
+  constructor(
+    private enviaLoginRequest: EnviaFormularioService,
+    private router: Router,
+    private service: CompartilhamentoService
+  ) {}
 
   registrarUser() {
     this.router.navigate(['/register']);
+  }
+
+  enviaEmailParaPrincipalPage() {
+    this.service.setEmail(this.email);
   }
 
   enviar() {
     this.enviaLoginRequest.realizaLogin(this.email, this.senha).subscribe({
       next: (res) => {
         console.log('Login realizado com sucesso', res);
+        this.enviaEmailParaPrincipalPage();
         this.router.navigate(['/home']);
       },
       error: (err) => {
