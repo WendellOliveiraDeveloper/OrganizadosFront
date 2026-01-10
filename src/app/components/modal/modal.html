@@ -1,1 +1,21 @@
-<p>modal works!</p>
+@if (isVisible) {
+<div class="backdrop" (click)="onClose()">
+  <div class="modal_container" (click)="$event.stopPropagation()">
+    <div class="modal_container--header">
+      <div class="modal_container--header--text">
+        <p>{{ title }}</p>
+
+        @if (error) {
+        <img [src]="icon" alt="error" />
+        }
+      </div>
+
+      <button (click)="onClose()">X</button>
+    </div>
+
+    <div class="modal_container--content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>
+}

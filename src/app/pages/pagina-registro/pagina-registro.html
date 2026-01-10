@@ -58,4 +58,12 @@
       </form>
     </div>
   </div>
+  <app-modal
+    [isVisible]="modalAberto"
+    title="Erro ao registrar"
+    [error]="true"
+    (close)="modalAberto = false"
+  >
+    <p>{{ erroMensagem }}</p>
+  </app-modal>
 </main>

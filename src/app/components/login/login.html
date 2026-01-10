@@ -3,7 +3,7 @@
     <div class="titulo">
       <p>Login</p>
     </div>
-    <form class="formulario" (ngSubmit)="enviar()" #form="ngForm">
+    <form class="formulario" (ngSubmit)="enviar()" #form="ngForm" novalidate>
       <div>
         <div class="campos_login">
           <label>Digite seu email:</label>
@@ -16,8 +16,16 @@
       </div>
       <div class="botoes">
         <button class="botaoLogar" type="submit">Logar</button>
-        <button class="botaoRegistrar" (click)="registrarUser()">Registrar</button>
+        <button class="botaoRegistrar" type="button" (click)="registrarUser()">Registrar</button>
       </div>
     </form>
   </div>
+  <app-modal
+    [isVisible]="modalAberto"
+    title="Erro ao logar!"
+    (close)="modalAberto = false"
+    [error]="true"
+  >
+    <p>{{ erroMensagem }}</p>
+  </app-modal>
 </main>

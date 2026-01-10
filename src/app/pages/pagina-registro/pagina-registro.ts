@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RegistraUser } from '../../services/registra-user';
 import { LabelComponent } from '../../components/label-component/label-component';
+import { Modal } from '../../components/modal/modal';
 
 @Component({
   selector: 'app-pagina-registro',
-  imports: [LabelComponent, CommonModule, FormsModule],
+  imports: [LabelComponent, CommonModule, FormsModule, Modal],
   templateUrl: './pagina-registro.html',
   styleUrl: './pagina-registro.scss',
 })
@@ -16,6 +17,8 @@ export class PaginaRegistro {
   email!: string;
   senha!: string;
   telefone!: string;
+  modalAberto: boolean = false;
+  erroMensagem: string = '';
 
   constructor(private registraUserService: RegistraUser, private router: Router) {}
 
@@ -32,7 +35,9 @@ export class PaginaRegistro {
           this.router.navigate(['/login']);
         },
         error: (err) => {
-          alert(`Erro ao registrar usuário: ${err.error}`);
+          this.modalAberto = true;
+          this.erroMensagem =
+            err?.error?.mensagem || err?.error?.message || 'Erro inesperado ao registrar usuário';
         },
       });
   }

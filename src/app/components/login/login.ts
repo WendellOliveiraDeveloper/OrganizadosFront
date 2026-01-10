@@ -3,17 +3,20 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EnviaFormularioService } from '../../services/envia-formulario';
 import { Router } from '@angular/router';
+import { Modal } from '../modal/modal';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Modal],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login {
   email!: string;
   senha!: string;
+  modalAberto: boolean = false;
+  erroMensagem!: string;
 
   constructor(private enviaLoginRequest: EnviaFormularioService, private router: Router) {}
 
@@ -28,12 +31,15 @@ export class Login {
         this.router.navigate(['/home']);
       },
       error: (err) => {
-        if (err === 404) {
-          alert(`Erro: ${err.error}`);
-        }
+        if (err.status === 404 || err.status === 401) {
+          this.erroMensagem =
+            err?.error?.mensagem || err?.error?.message || 'Erro ao realizar login';
 
-        if (err === 401) {
-          alert(`Erro: ${err.error}`);
+          console.log('modalAberto antes:', this.modalAberto);
+
+          this.modalAberto = true;
+
+          console.log('modalAberto depois:', this.modalAberto);
         }
       },
     });
