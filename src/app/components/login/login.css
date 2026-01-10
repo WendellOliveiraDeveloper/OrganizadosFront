@@ -1,0 +1,77 @@
+  * {
+    margin: 0;
+  }
+
+  main {
+    display: flex;
+    justify-content: center;
+    margin-top: 3vw;
+  }
+
+  .modalLogin {
+    background-color: #cccccc;
+    width: 50vw;
+    height: 30vw;
+
+    & .titulo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #979797;
+      margin-bottom: 5vw;
+
+      & p {
+        font-size: 30px;
+        font-weight: bold;
+      }
+    }
+
+    & .campos_login {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      & p {
+        font-size: 20px;
+      }
+
+      & input {
+        width: 20vw;
+        height: 25px;
+      }
+
+      & input::after {
+        border-color: #17928c;
+        transition: 0.2s;
+      }
+    }
+
+    & .botoes {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+      gap: 6.9vw;
+
+      & button {
+        width: 6.8vw;
+        height: 2vw;
+        font-size: 16px;
+        border: none;
+      }
+
+      & .botaoLogar:hover {
+        background-color: #0c6d08;
+        border: none;
+        color: #ffff;
+        transition: 0.3s;
+      }
+
+      & .botaoRegistrar:hover {
+        background-color: #172ca3;
+        border: none;
+        color: #ffff;
+        transition: 0.3s;
+      }
+    }
+  }

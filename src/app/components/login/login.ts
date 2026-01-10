@@ -15,24 +15,25 @@ export class Login {
   email!: string;
   senha!: string;
 
-  constructor(
-    private enviaLoginRequest: EnviaFormularioService,
-    private router: Router
-  ) {}
-  
+  constructor(private enviaLoginRequest: EnviaFormularioService, private router: Router) {}
+
+  registrarUser() {
+    this.router.navigate(['/register']);
+  }
+
   enviar() {
     this.enviaLoginRequest.realizaLogin(this.email, this.senha).subscribe({
       next: (res) => {
         console.log('Login realizado com sucesso', res);
-        this.router.navigate(['/']);
+        this.router.navigate(['/home']);
       },
       error: (err) => {
         if (err === 404) {
-          alert(`Erro: ${err}`)
+          alert(`Erro: ${err.error}`);
         }
 
         if (err === 401) {
-          alert(`Erro: ${err}`)
+          alert(`Erro: ${err.error}`);
         }
       },
     });

@@ -1,0 +1,11 @@
+.label {
+    display: flex;
+
+    & .required {
+      width: 8px;
+      height: 8px;
+      background-color: #ff6347;
+      border-radius: 50%;
+    }
+}
+

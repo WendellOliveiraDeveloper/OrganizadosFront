@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EnviaFormulario } from './envia-formulario';
+import { EnviaFormularioService } from './envia-formulario';
 
-describe('EnviaFormulario', () => {
-  let service: EnviaFormulario;
+describe('EnviaFormularioService', () => {
+  let service: EnviaFormularioService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(EnviaFormulario);
+    service = TestBed.inject(EnviaFormularioService);
   });
 
   it('should be created', () => {

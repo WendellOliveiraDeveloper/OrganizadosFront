@@ -1,0 +1,18 @@
+main {
+    display: flex;
+    justify-content: center;
+    margin-top: 70px;
+
+    & .campo-principal {
+        background-color: #d6d6d6;
+        width: 500px;
+        height: 320px;
+
+        & .cabecalho {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            border-bottom: 1px solid black;
+        }
+    }
+}
