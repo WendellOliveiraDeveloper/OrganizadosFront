@@ -7,12 +7,22 @@ export class UserStorageService {
   private readonly KEY = 'user_logado';
 
   salvar(user: any) {
+    if (!user) return;
     localStorage.setItem(this.KEY, JSON.stringify(user));
   }
 
   buscar() {
-    const data = localStorage.getItem(this.KEY);
-    return data ? JSON.parse(data) : null;
+    const value = localStorage.getItem(this.KEY);
+
+    if (!value || value === 'undefined') {
+      return null;
+    }
+
+    try {
+      return JSON.parse(value);
+    } catch {
+      return null;
+    }
   }
 
   limpar() {

@@ -32,7 +32,6 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private buscarPorEmail: BuscarUserEmailService,
-    private cdr: ChangeDetectorRef,
     private userStorage: UserStorageService,
     private router: Router,
     private userService: CompartilhamentoService
@@ -40,6 +39,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     const userSalvo = this.userStorage.buscar();
+    console.log(`user salvo: ${userSalvo}`);
 
     if (userSalvo) {
       this.user = userSalvo;
@@ -47,9 +47,6 @@ export class NavbarComponent implements OnInit {
     } else {
       this.buscarDadosUsuario();
     }
-
-    const userGet = this.userService.getEmail();
-    console.log(userGet);
   }
 
   buscarDadosUsuario() {
@@ -57,14 +54,12 @@ export class NavbarComponent implements OnInit {
       next: (res) => {
         this.user = res;
         this.userStorage.salvar(this.user);
-
-        this.cdr.detectChanges();
+        this.email = this.user?.email;
       },
       error: (err) => {
         const userSalvo = localStorage.getItem('user');
         if (userSalvo) {
           this.user = JSON.parse(userSalvo);
-          this.cdr.detectChanges();
         }
       },
     });
