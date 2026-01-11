@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EnviaFormularioService } from '../../services/envia-formulario';
 import { Router } from '@angular/router';
 import { Modal } from '../modal/modal';
 import { CompartilhamentoService } from '../../services/compartilhamento-service';
+import { BuscarUserEmailService } from '../../services/buscar-user-email';
+import { UserStorageService } from '../../services/user-storage-service';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +16,7 @@ import { CompartilhamentoService } from '../../services/compartilhamento-service
   styleUrl: './login.css',
 })
 export class Login {
+  user: any = null;
   email!: string;
   senha!: string;
   modalAberto: boolean = false;
@@ -22,22 +25,21 @@ export class Login {
   constructor(
     private enviaLoginRequest: EnviaFormularioService,
     private router: Router,
-    private service: CompartilhamentoService
+    private buscarPorEmail: BuscarUserEmailService,
+    private cdr: ChangeDetectorRef,
+    private userStorage: UserStorageService
   ) {}
 
   registrarUser() {
     this.router.navigate(['/register']);
   }
 
-  enviaEmailParaPrincipalPage() {
-    this.service.setEmail(this.email);
-  }
-
   enviar() {
     this.enviaLoginRequest.realizaLogin(this.email, this.senha).subscribe({
-      next: (res) => {
-        console.log('Login realizado com sucesso', res);
-        this.enviaEmailParaPrincipalPage();
+      next: () => {
+        this.userStorage.limpar();
+        this.user = this.buscarDadosUsuario();
+        this.userStorage.salvar(this.user);
         this.router.navigate(['/home']);
       },
       error: (err) => {
@@ -45,11 +47,25 @@ export class Login {
           this.erroMensagem =
             err?.error?.mensagem || err?.error?.message || 'Erro ao realizar login';
 
-          console.log('modalAberto antes:', this.modalAberto);
-
           this.modalAberto = true;
+        }
+      },
+    });
+  }
 
-          console.log('modalAberto depois:', this.modalAberto);
+  buscarDadosUsuario() {
+    this.buscarPorEmail.buscaPorEmail(this.email).subscribe({
+      next: (res) => {
+        this.user = res;
+        this.userStorage.salvar(this.user);
+
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        const userSalvo = localStorage.getItem('user');
+        if (userSalvo) {
+          this.user = JSON.parse(userSalvo);
+          this.cdr.detectChanges();
         }
       },
     });

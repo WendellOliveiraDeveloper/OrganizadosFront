@@ -1,5 +1,5 @@
 export const imagens = {
   error: 'icons/error.png',
-  success: 'icons/success.png',
-  warning: 'icons/warning.png'
+  allTasks: 'icons/todas_tarefas.png',
+  config: 'icons/config.png',
 } as const;

@@ -1,12 +1,17 @@
 <div class="navbar-container">
   @if (user?.nome) {
-  <p>Bem vindo! {{ user.nome }}</p>
+  <p class="navbar-container--text-header">Bem vindo, {{ user.nome }}!</p>
   }
-  <nav>
-    <ul>
-      <li>Tarefas a fazer</li>
-      <li>Todas as tarefas</li>
-      <li>Configurações</li>
+  <nav class="navbar-container--nav">
+    <ul class="navbar-container--nav--list">
+      @for (item of componentsLaterais; track $index) {
+      <a [href]="item.route" routerLinkActive="active">
+        <li><img [src]="item.icon" [alt]="item.alt" />{{ item.label }}</li>
+      </a>
+      }
     </ul>
+    <button class="navbar-container--nav--button" type="button" (click)="sairDoSistema()">
+      Sair do sistema
+    </button>
   </nav>
 </div>
