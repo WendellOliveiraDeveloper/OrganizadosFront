@@ -28,7 +28,7 @@
           />
         </div>
         <div class="campos">
-          <app-label-component text="Telefone" for="telefoneRegistro" [required]="true" />
+          <app-label-component text="Telefone" for="telefoneRegistro" />
           <input
             class="campos--input"
             type="tel"
@@ -58,11 +58,20 @@
       </form>
     </div>
   </div>
+  <app-loading-component [isLoading]="isLoadingModal"></app-loading-component>
   <app-modal
-    [isVisible]="modalAberto"
+    [isVisible]="modalSucessoAberto"
+    title="Usuário registrado com sucesso!"
+    [sucess]="true"
+    (close)="modalSucessoAberto = false"
+  >
+    <p>{{ mensagemSucesso }}</p>
+  </app-modal>
+  <app-modal
+    [isVisible]="modalErroAberto"
     title="Erro ao registrar"
     [error]="true"
-    (close)="modalAberto = false"
+    (close)="modalErroAberto = false"
   >
     <p>{{ erroMensagem }}</p>
   </app-modal>

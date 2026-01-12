@@ -22,6 +22,14 @@
   </div>
   <app-loading-component [isLoading]="isLoadingModal"></app-loading-component>
   <app-modal
+    [isVisible]="modalSucesso"
+    title="Sucesso ao logar!"
+    [sucess]="true"
+    (close)="modalSucesso = false"
+  >
+    <p>{{ sucessoMensagem }}</p>
+  </app-modal>
+  <app-modal
     [isVisible]="modalAberto"
     title="Erro ao logar!"
     (close)="modalAberto = false"

@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment_dev';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BuscarUserEmailService {
-  private readonly apiUrl = 'http://localhost:8080/usuarios/dados_user_email';
+private readonly apiUrl = `${environment.apiUrl}/usuarios/dados_user_email`;
 
   constructor(private http: HttpClient) {}
 

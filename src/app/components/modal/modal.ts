@@ -11,7 +11,9 @@ import { imagens } from '../../icons/imagem-services';
 })
 export class Modal {
   icon: string = imagens.error;
+  iconSucess: string = imagens.sucess;
   @Input() error!: boolean;
+  @Input() sucess!: boolean;
 
   @Input() title!: string;
   @Input() isVisible: boolean = false;

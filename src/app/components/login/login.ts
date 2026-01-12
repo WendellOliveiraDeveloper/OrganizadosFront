@@ -7,7 +7,7 @@ import { Modal } from '../modal/modal';
 import { BuscarUserEmailService } from '../../services/buscar-user-email';
 import { UserStorageService } from '../../services/user-storage-service';
 import { LoadingComponent } from '../loading-component/loading-component';
-import { finalize, switchMap } from 'rxjs';
+import { finalize, switchMap, timeout } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +21,8 @@ export class Login {
   email!: string;
   senha!: string;
   modalAberto: boolean = false;
+  modalSucesso: boolean = false;
+  sucessoMensagem!: string;
   erroMensagem!: string;
   isLoadingModal: boolean = false;
 
@@ -37,8 +39,15 @@ export class Login {
   }
 
   enviar() {
-    this.isLoadingModal = true;
     this.erroMensagem = '';
+    this.isLoadingModal = true;
+
+    if (!this.email || !this.senha) {
+      this.erroMensagem = 'Preencha todos os campos obrigatórios';
+      this.modalAberto = true;
+      this.isLoadingModal = false;
+      return;
+    }
 
     this.enviaLoginRequest
       .realizaLogin(this.email, this.senha)
@@ -55,18 +64,54 @@ export class Login {
         next: (res) => {
           this.user = res;
           this.userStorage.salvar(res);
-          this.router.navigate(['/home']);
+          this.sucessoMensagem = `Usuário logado! bem vindo ${this.user?.nome}`;
+          this.modalSucesso = true;
+
+          this.cdr.detectChanges();
+
+          setTimeout(() => {
+            this.modalSucesso = false;
+            this.router.navigate(['/home']);
+          }, 5000);
         },
         error: (err) => {
           this.modalAberto = true;
-
-          if (err.status === 404 || err.status === 401) {
-            this.erroMensagem =
-              err?.error?.mensagem || err?.error?.message || 'Erro ao realizar login';
-          } else {
-            this.erroMensagem = 'Erro inesperado ao realizar login';
-          }
+          this.erroMensagem = err.message;
         },
       });
   }
 }
+
+//   next: () => {
+//     this.isLoadingModal = false;
+//     this.mensagemSucesso = `O usuário ${this.nome} foi registrado com sucesso!`;
+//     this.modalSucessoAberto = true;
+
+//     setTimeout(() => {
+//       this.modalSucessoAberto = false;
+//       this.router.navigate(['/login']);
+//     }, 1500);
+//   },
+//   error: (err: HttpErrorResponse) => {
+//     this.isLoadingModal = false;
+
+//     if (err.status === 0) {
+//       this.erroMensagem =
+//         'Erro de conexão com o servidor. Verifique se o está tudo certo com o servidor.';
+//       this.modalErroAberto = true;
+//     } else if (err.status) {
+//       this.erroMensagem =
+//         err.error?.message ||
+//         err.error?.mensagem ||
+//         err.message ||
+//         `Erro ${err.status} ao registrar`;
+//       this.modalErroAberto = true;
+//     } else {
+//       this.erroMensagem = 'Erro desconhecido ao tentar registrar.';
+//       this.modalErroAberto = true;
+//     }
+//   },
+//   complete: () => {
+//     this.isLoadingModal = false;
+//   },
+// });
