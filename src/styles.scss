@@ -1,0 +1,13 @@
+@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: sans-serif;
+  margin: 0;
+}
+
+p {
+  cursor: default;
+}

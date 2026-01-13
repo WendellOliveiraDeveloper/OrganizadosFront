@@ -8,13 +8,14 @@ import { BuscarUserEmailService } from '../../services/buscar-user-email';
 import { UserStorageService } from '../../services/user-storage-service';
 import { LoadingComponent } from '../loading-component/loading-component';
 import { finalize, switchMap, timeout } from 'rxjs';
+import { LabelComponent } from "../label-component/label-component";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, Modal, LoadingComponent],
+  imports: [CommonModule, FormsModule, Modal, LoadingComponent, LabelComponent],
   templateUrl: './login.html',
-  styleUrl: './login.css',
+  styleUrl: './login.scss',
 })
 export class Login {
   user: any = null;

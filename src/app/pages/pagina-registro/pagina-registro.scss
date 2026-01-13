@@ -1,18 +1,21 @@
 main {
   display: flex;
   justify-content: center;
-  margin-top: 70px;
+  margin-top: 20px;
 
   & .campo-principal {
     background-color: #d6d6d6;
-    width: 500px;
-    height: 370px;
 
     & .cabecalho {
       display: flex;
       justify-content: center;
-      margin-top: 10px;
-      border-bottom: 1px solid black;
+      padding: 7px;
+      background-color: #979797;
+
+      & p {
+        font-size: 30px;
+        font-weight: bold;
+      }
     }
   }
 
@@ -20,19 +23,21 @@ main {
     & .campos {
       display: flex;
       flex-direction: column;
-      margin-top: 10px;
-      margin-left: 78px;
+      margin-top: 14px;
+
+      &--label {
+        font-size: 18px;
+      }
 
       &--input {
-        height: 20px;
-        width: 330px;
         margin-top: 5px;
+        width: 400px;
       }
     }
 
     & .botao {
       display: flex;
-      justify-content: space-around;
+      justify-content: space-evenly;
       margin-top: 20px;
       border-radius: 8px;
 
@@ -42,14 +47,22 @@ main {
         cursor: pointer;
         color: #ffff;
         width: 90px;
-        height: 20px;
+        height: 30px;
         font-size: 15px;
       }
 
       &--retornar {
-        width: 90px;
-        height: 20px;
-        font-size: 15px;
+        width: 7rem;
+        height: 2rem;
+        font-size: 16px;
+        background-color: #929292;
+        color: #ffff;
+      }
+
+      &--retornar:hover {
+        background-color: #172ca3;
+        color: #ffff;
+        border: none;
       }
     }
   }
