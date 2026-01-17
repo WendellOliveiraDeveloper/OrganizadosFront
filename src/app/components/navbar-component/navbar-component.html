@@ -3,9 +3,9 @@
   <p class="navbar-container--text-header">Bem vindo, {{ user.nome }}!</p>
   }
   <nav class="navbar-container--nav">
-    <ul class="navbar-container--nav--list">
+    <ul class="navbar-container--nav--list ml-[30px]">
       @for (item of componentsLaterais; track $index) {
-      <a [href]="item.route" routerLinkActive="active">
+      <a [routerLink]="item.route" routerLinkActive="active" [style.--active-color]="item.cor">
         <li><img [src]="item.icon" [alt]="item.alt" />{{ item.label }}</li>
       </a>
       }

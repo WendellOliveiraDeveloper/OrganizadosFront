@@ -1,13 +1,17 @@
-  .cabecalho {
-    background-color: rgb(26, 124, 141);
+.cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(26, 124, 141);
+  height: 50px;
 
-    & div {
-      display: flex;
-      justify-content: center;
+  & div {
+    display: flex;
+    justify-content: center;
 
-      & p {
-        color: #fff;
-        font-size: 44px;
-      }
+    & p {
+      color: #fff;
+      font-size: 44px;
     }
   }
+}
