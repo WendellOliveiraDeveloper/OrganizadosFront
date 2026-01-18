@@ -1,18 +1,18 @@
-import { ChangeDetectorRef, Component, OnChanges } from '@angular/core';
-import { NavbarComponent } from '../../components/navbar-component/navbar-component';
-import { TasksServices } from '../../services/tasks/tasks-services';
-import { UserStorageService } from '../../services/user-storage-service';
-import { Modal } from '../../components/modal/modal';
-import { HttpErrorResponse } from '@angular/common/http';
-import { LoadingComponent } from '../../components/loading-component/loading-component';
-import { TasksStoreService } from '../../services/tasks/tasks-store-service';
-import { FormsModule } from '@angular/forms';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { finalize, forkJoin } from 'rxjs';
-import { LabelComponent } from '../../components/label-component/label-component';
-import { imagens } from '../../icons/imagem-services';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import {ChangeDetectorRef, Component, OnChanges} from '@angular/core';
+import {NavbarComponent} from '../../components/navbar-component/navbar-component';
+import {TasksServices} from '../../services/tasks/tasks-services';
+import {UserStorageService} from '../../services/user-storage-service';
+import {Modal} from '../../components/modal/modal';
+import {HttpErrorResponse} from '@angular/common/http';
+import {LoadingComponent} from '../../components/loading-component/loading-component';
+import {TasksStoreService} from '../../services/tasks/tasks-store-service';
+import {FormsModule} from '@angular/forms';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {finalize, forkJoin} from 'rxjs';
+import {LabelComponent} from '../../components/label-component/label-component';
+import {imagens} from '../../icons/imagem-services';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-pagina-tarefas',
@@ -36,12 +36,15 @@ export class PaginaTarefas {
   isModalErroAberto: boolean = false;
   isLoadingModal: boolean = false;
   isModalEditarAberto: boolean = false;
+  isModalSucessoAberto: boolean = false;
   isEditando: boolean = false;
   mensagemErro: string = '';
   checked!: boolean;
   tituloModal!: string;
   iconAdicionar: string = imagens.adicionar;
   iconDelete: string = imagens.excluir;
+  taskIdDelete!: number;
+  mensagemSucesso: string = '';
 
   tituloTabela = [
     {
@@ -60,7 +63,8 @@ export class PaginaTarefas {
     private tasksServices: TasksServices,
     private tasksStorage: TasksStoreService,
     private cdr: ChangeDetectorRef,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     const userSalvo = this.userStorage.buscar();
@@ -70,6 +74,7 @@ export class PaginaTarefas {
       this.user = userSalvo;
       this.qtdTasks = qtdTarefasSalvas;
       this.buscarTarefasByUser();
+      this.cdr.detectChanges();
     }
   }
 
@@ -97,20 +102,41 @@ export class PaginaTarefas {
       descricaoTarefa: '',
       dataTarefa: '',
       tiposTasks: 'A FAZER',
-      checked: false,
+      userID: this.user?.id,
     };
+    console.log(this.task);
     this.isModalEditarAberto = true;
   }
+
+  public criarNovaTask() {
+    this.isLoadingModal = true;
+    console.log(this.task)
+
+    this.tasksServices.criarNovaTask(this.task)
+      .pipe(
+        finalize(() => {
+          this.isLoadingModal = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: () => {
+          console.log(this.task)
+          this.isModalEditarAberto = false;
+          this.mensagemSucesso = 'Tarefa cadastrada com sucesso!'
+          this.isModalSucessoAberto = true;
+        },
+        error: (err: HttpErrorResponse) => {
+          this.tratarErro(err);
+        }
+      })
+  }
+
 
   public editarTarefa(idx: number) {
     this.tituloModal = 'Editar tarefa';
     this.isEditando = true;
-    const task = { ...this.allTasks[idx] };
-
-    if (task.dataTarefa) {
-      const [dia, mes, ano] = task.dataTarefa.split('/');
-      task.dataTarefa = `${ano}-${mes}-${dia}`;
-    }
+    const task = {...this.allTasks[idx]};
 
     this.task = task;
     this.isModalEditarAberto = true;
@@ -122,7 +148,7 @@ export class PaginaTarefas {
     const tarefas$ = this.tasksServices.buscarTarefasByUserId(this.user?.id);
     const qtd$ = this.tasksServices.buscarQuantidadeTarefasByUserId(this.user?.id);
 
-    forkJoin({ allTasks: tarefas$, qtd: qtd$ })
+    forkJoin({allTasks: tarefas$, qtd: qtd$})
       .pipe(
         finalize(() => {
           this.isLoadingModal = false;
@@ -161,6 +187,33 @@ export class PaginaTarefas {
     });
   }
 
+  public armazenaTaskId(task: any): number {
+    console.log(task.taskId);
+    return this.taskIdDelete = task.taskId;
+  }
+
+  public excluirTarefaById(task: any): void {
+    this.isLoadingModal = true;
+
+    this.tasksServices.excluirTarefa(this?.taskIdDelete, this.user?.id)
+      .pipe(
+        finalize(() => {
+          this.isLoadingModal = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.isModalSucessoAberto = true;
+          this.mensagemSucesso = 'Tarefa deletada!';
+        },
+        error: (err: HttpErrorResponse) => {
+          this.tratarErro(err);
+        }
+      })
+  }
+
+
   private tratarErro(err: HttpErrorResponse): void {
     if (err.status === 0) {
       this.mensagemErro = 'Erro de conexão com o servidor. Verifique se o servidor está rodando.';
@@ -169,7 +222,7 @@ export class PaginaTarefas {
         err.error?.message ||
         err.error?.mensagem ||
         err.message ||
-        `Erro ${err.status} ao trazer seus dados`;
+        `Erro ${err.status}  inesperado!`;
     } else {
       this.mensagemErro = 'Erro desconhecido ao tentar buscar dados.';
     }
