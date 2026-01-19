@@ -67,8 +67,8 @@ export class PaginaTarefas {
 
   tiposStatusTasks = [
     'COMPLETO',
-    'EM_ANDAMENTO',
-    'A_FAZER',
+    'EM ANDAMENTO',
+    'A FAZER',
     'ATRASADO'
   ]
 
@@ -115,7 +115,7 @@ export class PaginaTarefas {
       nomeTarefa: '',
       descricaoTarefa: '',
       dataTarefa: '',
-      tiposTasks: 'A FAZER',
+      tiposTasks: '',
       userID: this.user?.id,
     };
     this.isModalEditarAberto = true;
@@ -297,9 +297,9 @@ export class PaginaTarefas {
     switch (status) {
       case 'COMPLETO':
         return 'status-completo';
-      case 'EM_ANDAMENTO':
+      case 'EM ANDAMENTO':
         return 'status-em-andamento';
-      case 'A_FAZER':
+      case 'A FAZER':
         return 'status-a-fazer';
       case 'ATRASADO':
         return 'status-atrasado';
@@ -309,9 +309,9 @@ export class PaginaTarefas {
   }
 
   statusTaskMap: Record<string, number> = {
-    COMPLETO: StatusTaskEnum.COMPLETO,
-    EM_ANDAMENTO: StatusTaskEnum.EM_ANDAMENTO,
-    A_FAZER: StatusTaskEnum.A_FAZER,
-    ATRASADO: StatusTaskEnum.ATRASADO
+    'COMPLETO': StatusTaskEnum.COMPLETO,
+    'EM ANDAMENTO': StatusTaskEnum.EM_ANDAMENTO,
+    'A FAZER': StatusTaskEnum.A_FAZER,
+    'ATRASADO': StatusTaskEnum.ATRASADO
   };
 }
