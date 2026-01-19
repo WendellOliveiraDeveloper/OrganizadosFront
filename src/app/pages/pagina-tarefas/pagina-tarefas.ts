@@ -115,7 +115,7 @@ export class PaginaTarefas {
       nomeTarefa: '',
       descricaoTarefa: '',
       dataTarefa: '',
-      tiposTasks: 'A FAZER',
+      tiposTasks: '',
       userID: this.user?.id,
     };
     this.isModalEditarAberto = true;
@@ -155,6 +155,7 @@ export class PaginaTarefas {
       .subscribe({
         next: () => {
           this.isModalEditarAberto = false;
+          console.log(payload);
           this.mensagemSucesso = 'Tarefa cadastrada com sucesso!'
           this.isModalSucessoAberto = true;
 
@@ -216,10 +217,16 @@ export class PaginaTarefas {
       )
       .subscribe({
         next: (res) => {
-          this.allTasks = (res.allTasks || []).map((task: any) => ({
-            ...task,
-            tiposTasks: this.verificarAtraso(task),
-          }));
+          this.allTasks = (res.allTasks || []).map((task: any) => {
+            const statusOriginal = this.verificarAtraso(task);
+
+            return {
+              ...task,
+              tiposTasks: this.formatStatus(statusOriginal)
+            };
+          });
+
+          console.log(this.allTasks);
           this.qtdTasks = res.qtd || 0;
           this.tasksStorage.salvarTask(res.qtd || 0);
         },
