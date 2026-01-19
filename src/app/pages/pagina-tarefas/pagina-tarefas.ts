@@ -14,6 +14,13 @@ import {LabelComponent} from '../../components/label-component/label-component';
 import {imagens} from '../../icons/imagem-services';
 import {MatTooltipModule} from '@angular/material/tooltip';
 
+export enum StatusTaskEnum {
+  COMPLETO = 0,
+  EM_ANDAMENTO = 1,
+  A_FAZER = 2,
+  ATRASADO = 3
+}
+
 @Component({
   selector: 'app-pagina-tarefas',
   imports: [
@@ -57,6 +64,13 @@ export class PaginaTarefas {
       name: 'Status',
     },
   ];
+
+  tiposStatusTasks = [
+    'COMPLETO',
+    'EM_ANDAMENTO',
+    'A_FAZER',
+    'ATRASADO'
+  ]
 
   constructor(
     private userStorage: UserStorageService,
@@ -104,15 +118,34 @@ export class PaginaTarefas {
       tiposTasks: 'A FAZER',
       userID: this.user?.id,
     };
-    console.log(this.task);
     this.isModalEditarAberto = true;
   }
 
   public criarNovaTask() {
-    this.isLoadingModal = true;
-    console.log(this.task)
+    if (
+      !this.task.nomeTarefa ||
+      !this.task.descricaoTarefa ||
+      !this.task.dataTarefa
+    ) {
+      alert('Preencha os dados');
+      return;
+    }
 
-    this.tasksServices.criarNovaTask(this.task)
+    const statusNumerico = this.statusTaskMap[this.task.tiposTasks];
+
+    if (statusNumerico === undefined) {
+      alert('Status inválido');
+      return;
+    }
+
+    const payload = {
+      ...this.task,
+      tiposTasks: statusNumerico,
+    }
+
+    this.isLoadingModal = true;
+
+    this.tasksServices.criarNovaTask(payload)
       .pipe(
         finalize(() => {
           this.isLoadingModal = false;
@@ -121,10 +154,11 @@ export class PaginaTarefas {
       )
       .subscribe({
         next: () => {
-          console.log(this.task)
           this.isModalEditarAberto = false;
           this.mensagemSucesso = 'Tarefa cadastrada com sucesso!'
           this.isModalSucessoAberto = true;
+
+          this.buscarTarefasByUser();
         },
         error: (err: HttpErrorResponse) => {
           this.tratarErro(err);
@@ -140,6 +174,31 @@ export class PaginaTarefas {
 
     this.task = task;
     this.isModalEditarAberto = true;
+  }
+
+  editarTask() {
+    this.isLoadingModal = true
+
+    this.tasksServices.editarTask(this.user?.id, this.task)
+      .pipe(
+        finalize(() => {
+          this.isLoadingModal = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: (res) => {
+          this.isModalEditarAberto = false;
+          this.mensagemSucesso = 'Edição realizada com sucesso!';
+          this.isModalSucessoAberto = true;
+
+          this.buscarTarefasByUser();
+        },
+        error: (err: HttpErrorResponse) => {
+          this.isModalEditarAberto = false;
+          this.tratarErro(err);
+        }
+      })
   }
 
   public buscarTarefasByUser() {
@@ -188,7 +247,6 @@ export class PaginaTarefas {
   }
 
   public armazenaTaskId(task: any): number {
-    console.log(task.taskId);
     return this.taskIdDelete = task.taskId;
   }
 
@@ -206,6 +264,8 @@ export class PaginaTarefas {
         next: () => {
           this.isModalSucessoAberto = true;
           this.mensagemSucesso = 'Tarefa deletada!';
+
+          this.buscarTarefasByUser();
         },
         error: (err: HttpErrorResponse) => {
           this.tratarErro(err);
@@ -247,4 +307,11 @@ export class PaginaTarefas {
         return '';
     }
   }
+
+  statusTaskMap: Record<string, number> = {
+    COMPLETO: StatusTaskEnum.COMPLETO,
+    EM_ANDAMENTO: StatusTaskEnum.EM_ANDAMENTO,
+    A_FAZER: StatusTaskEnum.A_FAZER,
+    ATRASADO: StatusTaskEnum.ATRASADO
+  };
 }

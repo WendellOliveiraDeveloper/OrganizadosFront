@@ -39,6 +39,25 @@ export class TasksServices {
       );
   }
 
+  editarTask(userId: number, taskUpdate: any): Observable<any> {
+    return this.http
+      .put(`${this.apiUrlKey}/update_user/${userId}`, taskUpdate)
+      .pipe(
+        catchError((err) => {
+          let mensagemErro = 'Erro ao atualizar uma tarefa';
+
+          if (err.status === 401 || err.status === 404) {
+            mensagemErro = err?.error?.message ?? mensagemErro;
+          }
+
+          return throwError(() => ({
+            status: err.status,
+            mensagemErro
+          }))
+        })
+      )
+  }
+
   excluirTarefa(idTask: number, userId: number) {
     return this.http
       .delete(`${this.apiUrlKey}/delete_task/${idTask}/${userId}`)
