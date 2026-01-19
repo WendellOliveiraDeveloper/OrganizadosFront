@@ -8,13 +8,15 @@ import { BuscarUserEmailService } from '../../services/buscar-user-email';
 import { UserStorageService } from '../../services/user-storage-service';
 import { LoadingComponent } from '../loading-component/loading-component';
 import { finalize, switchMap, timeout } from 'rxjs';
+import { LabelComponent } from '../label-component/label-component';
+import { TasksStoreService } from '../../services/tasks/tasks-store-service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, Modal, LoadingComponent],
+  imports: [CommonModule, FormsModule, Modal, LoadingComponent, LabelComponent],
   templateUrl: './login.html',
-  styleUrl: './login.css',
+  styleUrl: './login.scss',
 })
 export class Login {
   user: any = null;
@@ -31,7 +33,8 @@ export class Login {
     private router: Router,
     private buscarPorEmail: BuscarUserEmailService,
     private cdr: ChangeDetectorRef,
-    private userStorage: UserStorageService
+    private userStorage: UserStorageService,
+    private taskStorage: TasksStoreService
   ) {}
 
   registrarUser() {
@@ -72,7 +75,7 @@ export class Login {
           setTimeout(() => {
             this.modalSucesso = false;
             this.router.navigate(['/home']);
-          }, 5000);
+          }, 2000);
         },
         error: (err) => {
           this.modalAberto = true;
@@ -81,37 +84,3 @@ export class Login {
       });
   }
 }
-
-//   next: () => {
-//     this.isLoadingModal = false;
-//     this.mensagemSucesso = `O usuário ${this.nome} foi registrado com sucesso!`;
-//     this.modalSucessoAberto = true;
-
-//     setTimeout(() => {
-//       this.modalSucessoAberto = false;
-//       this.router.navigate(['/login']);
-//     }, 1500);
-//   },
-//   error: (err: HttpErrorResponse) => {
-//     this.isLoadingModal = false;
-
-//     if (err.status === 0) {
-//       this.erroMensagem =
-//         'Erro de conexão com o servidor. Verifique se o está tudo certo com o servidor.';
-//       this.modalErroAberto = true;
-//     } else if (err.status) {
-//       this.erroMensagem =
-//         err.error?.message ||
-//         err.error?.mensagem ||
-//         err.message ||
-//         `Erro ${err.status} ao registrar`;
-//       this.modalErroAberto = true;
-//     } else {
-//       this.erroMensagem = 'Erro desconhecido ao tentar registrar.';
-//       this.modalErroAberto = true;
-//     }
-//   },
-//   complete: () => {
-//     this.isLoadingModal = false;
-//   },
-// });

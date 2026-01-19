@@ -1,0 +1,170 @@
+<div class="task_page">
+  <app-navbar-component/>
+  <main class="task_page--content">
+    <div class="task_page--content--qtd_tarefas">
+      @if (qtdTasks <= 0) {
+        <p class="text-[20px] font-bold">Você não possui tarefas</p>
+      } @else {
+        <p class="text-[20px] font-bold">Total de tarefas: {{ qtdTasks }}</p>
+      }
+    </div>
+
+    @if (qtdTasks > 0) {
+      <div class="task_page--content--all_tasks">
+        <div class="task_page--content--all_tasks--remove_icon">
+          <button (click)="excluirTarefaById(taskIdDelete)">
+            <img [src]="iconDelete" alt="Simbolo de lixeira"/>
+          </button>
+        </div>
+        <div class="task_page--content--all_tasks--table-scroll">
+          <table class="task_page--content--all_tasks--table">
+            <thead>
+            <tr class="text-[25px]">
+              <th></th>
+              @for (title of tituloTabela; track $index) {
+                <th>{{ title.name }}</th>
+              }
+            </tr>
+            </thead>
+
+            <tbody class="task_page--content--all_tasks--table--tbody">
+              @for (task of allTasks; track $index) {
+                <tr>
+                  <td>
+                    <input class="checkbox-round" type="checkbox" [ngModel]="task.checked"
+                           (click)="armazenaTaskId(task)"/>
+                  </td>
+                  <td (click)="editarTarefa($index)">{{ task.nomeTarefa }}</td>
+                  <td (click)="editarTarefa($index)">{{ task.dataTarefa }}</td>
+                  <td (click)="editarTarefa($index)">
+                    <span class="status-badge" [ngClass]="getStatusClass(task.tiposTasks)">
+                      {{ formatStatus(task.tiposTasks) }}
+                    </span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    } @else {
+      <p class="text-[20px] p-[70px]">Você não tem nenhuma tarefa registrada no sistema</p>
+    }
+    <div class="task_page--content--all_tasks--add_icon flex justify-end">
+      <button (click)="abrirModalCriarTask()">
+        <img [src]="iconAdicionar" alt="simbolo de mais"/>
+      </button>
+    </div>
+  </main>
+  <app-modal
+    [isVisible]="isModalErroAberto"
+    title="Erro Inesperado!"
+    [error]="true"
+    (close)="isModalErroAberto = false"
+  >
+    {{ mensagemErro }}
+  </app-modal>
+  <app-modal
+    [isVisible]="isModalSucessoAberto"
+    title="Sucesso!"
+    [sucess]="true"
+    (close)="isModalSucessoAberto = false"
+  >
+    {{ mensagemSucesso }}
+  </app-modal>
+  <app-modal
+    [isVisible]="isModalEditarAberto"
+    [title]="tituloModal"
+    (close)="isModalEditarAberto = false"
+  >
+    <div class="modal_task_content">
+      <form *ngIf="task" #formEdit="ngForm">
+        <div class="modal_task_content--campos">
+          <app-label-component
+            class="text-[18px]"
+            text="Nome da tarefa:"
+            for="nomeTarefa"
+            [required]="!isEditando"
+          />
+          <input
+            class="modal_task_content--campos--inp truncate"
+            type="text"
+            name="nomeTarefa"
+            id="nomeTarefa"
+            [matTooltip]="task.nomeTarefa || 'Não informada'"
+            matTooltipPosition="right"
+            [(ngModel)]="task.nomeTarefa"
+          />
+        </div>
+        <div class="modal_task_content--campos">
+          <app-label-component
+            class="text-[18px]"
+            text="Descrição da tarefa:"
+            for="descricaoTarefa"
+            [required]="!isEditando"
+          />
+          <input
+            class="modal_task_content--campos--inp truncate"
+            type="text"
+            name="descricaoTarefa"
+            id="descricaoTarefa"
+            [matTooltip]="task.descricaoTarefa || 'Não informada'"
+            matTooltipPosition="right"
+            [(ngModel)]="task.descricaoTarefa"
+          />
+        </div>
+        <div class="modal_task_content--campos">
+          <app-label-component
+            class="text-[18px]"
+            text="Data para conclusão:"
+            for="dataTarefa"
+            [required]="!isEditando"
+          />
+          <input
+            class="modal_task_content--campos--inp"
+            type="date"
+            name="dataTarefa"
+            id="dataTarefa"
+            [(ngModel)]="task.dataTarefa"
+          />
+        </div>
+        <div class="modal_task_content--campos">
+          <app-label-component class="text-[18px]" text="Status:" for="statusTarefa"/>
+          <input
+            class="modal_task_content--campos--inp"
+            type="text"
+            name="tipoTasks"
+            id="statusTarefa"
+            list="opcoes"
+            [(ngModel)]="task.tiposTasks"
+          />
+        </div>
+
+        <datalist id="opcoes">
+          @for (opcoes of tiposStatusTasks; track $index) {
+            <option [value]="opcoes">{{ opcoes }}</option>
+          }
+        </datalist>
+        <div class="modal_task_content--buttons flex justify-between">
+          @if (isEditando) {
+            <button class="modal_task_content--buttons--edit" type="submit" (click)="editarTask()">
+              Salvar
+            </button>
+          } @else {
+            <button class="modal_task_content--buttons--edit" type="submit" (click)="criarNovaTask()">
+              Criar tarefa
+            </button>
+          }
+          <Button
+            class="modal_task_content--buttons--cancel"
+            type="button"
+            (click)="isModalEditarAberto = false">
+            Cancelar
+          </Button>
+        </div>
+      </form>
+    </div>
+  </app-modal>
+  <app-loading-component [isLoading]="isLoadingModal"/>
+</div>

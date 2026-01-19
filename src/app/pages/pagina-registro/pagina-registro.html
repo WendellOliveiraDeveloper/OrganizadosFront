@@ -1,14 +1,14 @@
 <main class="pagina-registro">
-  <div class="campo-principal">
+  <div class="campo-principal h-[430px] w-[700px] overflow-y-auto">
     <div class="cabecalho">
       <p>Registre-se</p>
     </div>
-    <div class="formulario">
+    <div class="formulario flex justify-center">
       <form (ngSubmit)="enviaRegistro()" #form="ngForm">
         <div class="campos">
-          <app-label-component text="Nome" for="nomeRegistro" [required]="true" />
+          <app-label-component class="campos--label" text="Nome" for="nomeRegistro" [required]="true" />
           <input
-            class="campos--input"
+            class="campos--input bg-white h-[30px]"
             type="text"
             [(ngModel)]="nome"
             name="nome"
@@ -17,9 +17,9 @@
           />
         </div>
         <div class="campos">
-          <app-label-component text="Email" for="emailRegistro" [required]="true" />
+          <app-label-component class="campos--label" text="Email" for="emailRegistro" [required]="true" />
           <input
-            class="campos--input"
+            class="campos--input bg-white h-[30px]"
             type="email"
             [(ngModel)]="email"
             name="email"
@@ -28,9 +28,9 @@
           />
         </div>
         <div class="campos">
-          <app-label-component text="Telefone" for="telefoneRegistro" />
+          <app-label-component class="campos--label" text="Telefone" for="telefoneRegistro" />
           <input
-            class="campos--input"
+            class="campos--input bg-white h-[30px]"
             type="tel"
             [(ngModel)]="telefone"
             name="telefone"
@@ -39,9 +39,9 @@
           />
         </div>
         <div class="campos">
-          <app-label-component text="Senha" for="senhaRegistro" [required]="true" />
+          <app-label-component class="campos--label" text="Senha" for="senhaRegistro" [required]="true" />
           <input
-            class="campos--input"
+            class="campos--input bg-white h-[30px]"
             type="password"
             [(ngModel)]="senha"
             name="senha"
@@ -49,7 +49,7 @@
             required
           />
         </div>
-        <div class="botao">
+        <div class="botao flex w-[100%]">
           <button class="botao--registrar" type="submit">Registrar</button>
           <button class="botao--retornar" type="button" (click)="voltarPaginaLogin()">
             Voltar

@@ -53,7 +53,6 @@ export class PaginaRegistro {
           this.isLoadingModal = false;
           this.mensagemSucesso = `O usuário ${this.nome} foi registrado com sucesso!`;
           this.modalSucessoAberto = true;
-          console.log('Registro realizado com sucesso:', response);
 
           this.cdr.detectChanges();
 
@@ -79,12 +78,9 @@ export class PaginaRegistro {
           }
 
           this.modalErroAberto = true;
-
-          console.error('Erro no registro:', err);
         },
         complete: () => {
           this.isLoadingModal = false;
-          console.log('Requisição completa');
         },
       });
   }

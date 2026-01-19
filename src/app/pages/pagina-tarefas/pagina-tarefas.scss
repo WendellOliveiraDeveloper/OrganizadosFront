@@ -1,0 +1,215 @@
+.task_page {
+  z-index: 1;
+
+  &--content {
+    margin-left: 230px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+    &--all_tasks {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      &--table-scroll {
+        max-height: 320px;
+        overflow-y: auto;
+
+        @media screen and (min-height: 900px) {
+          max-height: 400px;
+        }
+
+        @media screen and (min-width: 1920px) {
+          max-height: 500px;
+        }
+
+        @media screen and (min-height: 900px) {
+          max-height: 60vh;
+        }
+      }
+      &--table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 15px;
+
+        min-width: 1000px;
+
+        thead th {
+          position: sticky;
+          top: 0;
+          background-color: none;
+          z-index: 2;
+        }
+
+        tbody {
+          tr {
+            background-color: #d9d9d9;
+            cursor: pointer;
+
+            td {
+              font-size: 19px;
+              padding: 15px 20px;
+              vertical-align: middle;
+              text-align: center;
+              font-weight: bold;
+            }
+
+            &:first-child {
+              border-top-left-radius: 8px;
+              border-bottom-left-radius: 8px;
+            }
+
+            &:last-child {
+              border-top-right-radius: 8px;
+              border-bottom-right-radius: 8px;
+            }
+
+            .status-badge {
+              padding: 6px 14px;
+              border-radius: 999px;
+              font-weight: 600;
+              font-size: 19px;
+              color: #000;
+              width: 220px;
+              display: inline-block;
+            }
+          }
+
+          tr:hover {
+            background-color: #d1dafb;
+            transition: 0.6s;
+          }
+        }
+      }
+
+      &--remove_icon {
+        padding: 4px;
+
+        & button {
+          cursor: pointer;
+        }
+      }
+
+      &--add_icon {
+        margin-top: 10px;
+
+        & button {
+          cursor: pointer;
+        }
+      }
+    }
+
+    &--qtd_tarefas {
+      margin-top: 3px;
+      padding: 8px;
+      display: flex;
+      justify-content: end;
+
+      @media screen and (min-height: 900px) {
+        padding: 10px;
+      }
+
+      @media screen and (min-width: 1920px) {
+        padding: 10px;
+      }
+
+      @media screen and (min-height: 900px) {
+        padding: 10px;
+      }
+    }
+  }
+}
+
+.modal_task_content {
+  display: flex;
+  justify-content: center;
+
+  &--campos {
+    margin-top: 17px;
+
+    &--inp {
+      width: 300px;
+      height: 30px;
+      background-color: #e7e7e7;
+    }
+  }
+
+  &--buttons {
+    margin-top: 20px;
+    margin-bottom: 12px;
+
+    & button {
+      width: 90px;
+      height: 27px;
+      cursor: pointer;
+    }
+
+    &--edit {
+      background-color: #929292;
+      color: #ffff;
+    }
+
+    &--edit:hover {
+      border: none;
+      background-color: #79ed6a;
+      transition: 0.3s;
+    }
+
+    &--cancel {
+      background-color: #d1dafb;
+    }
+
+    &--cancel:hover {
+      border: none;
+      background-color: #d1dafb;
+    }
+  }
+}
+
+.checkbox-round {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #555;
+  border-radius: 50%;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+}
+
+.checkbox-round::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.15s ease-in-out;
+  background-color: #1a7c8d;
+}
+
+.checkbox-round:checked::before {
+  transform: scale(1);
+}
+
+tr.selected {
+  background-color: #d1dafb;
+  transition: background-color 0.2s ease;
+}
+
+.status-completo {
+  background-color: #79ed6a;
+}
+
+.status-em-andamento {
+  background-color: #5adad0;
+}
+
+.status-a-fazer {
+  background-color: #facc15;
+}
+
+.status-atrasado {
+  background-color: #ff1a1e;
+}

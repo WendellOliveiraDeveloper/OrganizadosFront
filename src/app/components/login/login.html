@@ -4,14 +4,38 @@
       <p>Login</p>
     </div>
     <form class="formulario" (ngSubmit)="enviar()" #form="ngForm" novalidate>
-      <div>
-        <div class="campos_login">
-          <label>Digite seu email:</label>
-          <input type="email" name="email" [(ngModel)]="email" required />
+      <div class="campos_login">
+        <div class="campos_login--input">
+          <app-label-component
+            class="campos_login--input--label"
+            text="Email"
+            for="emailLogin"
+            [required]="true"
+          />
+          <input
+            class="bg-white w-[400px] h-[30px]"
+            type="email"
+            name="email"
+            id="emailLogin"
+            [(ngModel)]="email"
+            required
+          />
         </div>
-        <div class="campos_login">
-          <label>Digite sua senha:</label>
-          <input type="password" name="senha" [(ngModel)]="senha" required />
+        <div class="campos_login--input">
+          <app-label-component
+            class="campos_login--input--label"
+            text="Senha"
+            for="senhaLogin"
+            [required]="true"
+          />
+          <input
+            class="bg-white w-[400px] h-[30px]"
+            type="password"
+            name="senha"
+            id="senhaLogin"
+            [(ngModel)]="senha"
+            required
+          />
         </div>
       </div>
       <div class="botoes">

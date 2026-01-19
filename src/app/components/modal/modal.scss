@@ -26,6 +26,11 @@
     padding: 10px;
     border-bottom: 1px solid #000;
 
+    & p {
+      font-weight: bold;
+      font-size: 20px;
+    }
+
     &--text {
       display: flex;
       align-items: center;
