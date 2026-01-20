@@ -1,24 +1,24 @@
-import {ChangeDetectorRef, Component, OnChanges} from '@angular/core';
-import {NavbarComponent} from '../../components/navbar-component/navbar-component';
-import {TasksServices} from '../../services/tasks/tasks-services';
-import {UserStorageService} from '../../services/user-storage-service';
-import {Modal} from '../../components/modal/modal';
-import {HttpErrorResponse} from '@angular/common/http';
-import {LoadingComponent} from '../../components/loading-component/loading-component';
-import {TasksStoreService} from '../../services/tasks/tasks-store-service';
-import {FormsModule} from '@angular/forms';
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {finalize, forkJoin} from 'rxjs';
-import {LabelComponent} from '../../components/label-component/label-component';
-import {imagens} from '../../icons/imagem-services';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { ChangeDetectorRef, Component, OnChanges } from '@angular/core';
+import { NavbarComponent } from '../../components/navbar-component/navbar-component';
+import { TasksServices } from '../../services/tasks/tasks-services';
+import { UserStorageService } from '../../services/user-storage-service';
+import { Modal } from '../../components/modal/modal';
+import { HttpErrorResponse } from '@angular/common/http';
+import { LoadingComponent } from '../../components/loading-component/loading-component';
+import { TasksStoreService } from '../../services/tasks/tasks-store-service';
+import { FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { finalize, forkJoin } from 'rxjs';
+import { LabelComponent } from '../../components/label-component/label-component';
+import { imagens } from '../../icons/imagem-services';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export enum StatusTaskEnum {
   COMPLETO = 0,
   EM_ANDAMENTO = 1,
   A_FAZER = 2,
-  ATRASADO = 3
+  ATRASADO = 3,
 }
 
 @Component({
@@ -65,20 +65,14 @@ export class PaginaTarefas {
     },
   ];
 
-  tiposStatusTasks = [
-    'COMPLETO',
-    'EM ANDAMENTO',
-    'A FAZER',
-    'ATRASADO'
-  ]
+  tiposStatusTasks = ['COMPLETO', 'EM ANDAMENTO', 'A FAZER', 'ATRASADO'];
 
   constructor(
     private userStorage: UserStorageService,
     private tasksServices: TasksServices,
     private tasksStorage: TasksStoreService,
     private cdr: ChangeDetectorRef,
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     const userSalvo = this.userStorage.buscar();
@@ -122,11 +116,7 @@ export class PaginaTarefas {
   }
 
   public criarNovaTask() {
-    if (
-      !this.task.nomeTarefa ||
-      !this.task.descricaoTarefa ||
-      !this.task.dataTarefa
-    ) {
+    if (!this.task.nomeTarefa || !this.task.descricaoTarefa || !this.task.dataTarefa) {
       alert('Preencha os dados');
       return;
     }
@@ -141,51 +131,51 @@ export class PaginaTarefas {
     const payload = {
       ...this.task,
       tiposTasks: statusNumerico,
-    }
+    };
 
     this.isLoadingModal = true;
 
-    this.tasksServices.criarNovaTask(payload)
+    this.tasksServices
+      .criarNovaTask(payload)
       .pipe(
         finalize(() => {
           this.isLoadingModal = false;
           this.cdr.detectChanges();
-        })
+        }),
       )
       .subscribe({
         next: () => {
           this.isModalEditarAberto = false;
-          console.log(payload);
-          this.mensagemSucesso = 'Tarefa cadastrada com sucesso!'
+          this.mensagemSucesso = 'Tarefa cadastrada com sucesso!';
           this.isModalSucessoAberto = true;
 
           this.buscarTarefasByUser();
         },
         error: (err: HttpErrorResponse) => {
           this.tratarErro(err);
-        }
-      })
+        },
+      });
   }
-
 
   public editarTarefa(idx: number) {
     this.tituloModal = 'Editar tarefa';
     this.isEditando = true;
-    const task = {...this.allTasks[idx]};
+    const task = { ...this.allTasks[idx] };
 
     this.task = task;
     this.isModalEditarAberto = true;
   }
 
   editarTask() {
-    this.isLoadingModal = true
+    this.isLoadingModal = true;
 
-    this.tasksServices.editarTask(this.user?.id, this.task)
+    this.tasksServices
+      .editarTask(this.user?.id, this.task)
       .pipe(
         finalize(() => {
           this.isLoadingModal = false;
           this.cdr.detectChanges();
-        })
+        }),
       )
       .subscribe({
         next: (res) => {
@@ -198,8 +188,8 @@ export class PaginaTarefas {
         error: (err: HttpErrorResponse) => {
           this.isModalEditarAberto = false;
           this.tratarErro(err);
-        }
-      })
+        },
+      });
   }
 
   public buscarTarefasByUser() {
@@ -208,7 +198,7 @@ export class PaginaTarefas {
     const tarefas$ = this.tasksServices.buscarTarefasByUserId(this.user?.id);
     const qtd$ = this.tasksServices.buscarQuantidadeTarefasByUserId(this.user?.id);
 
-    forkJoin({allTasks: tarefas$, qtd: qtd$})
+    forkJoin({ allTasks: tarefas$, qtd: qtd$ })
       .pipe(
         finalize(() => {
           this.isLoadingModal = false;
@@ -222,11 +212,10 @@ export class PaginaTarefas {
 
             return {
               ...task,
-              tiposTasks: this.formatStatus(statusOriginal)
+              tiposTasks: this.formatStatus(statusOriginal),
             };
           });
 
-          console.log(this.allTasks);
           this.qtdTasks = res.qtd || 0;
           this.tasksStorage.salvarTask(res.qtd || 0);
         },
@@ -254,18 +243,19 @@ export class PaginaTarefas {
   }
 
   public armazenaTaskId(task: any): number {
-    return this.taskIdDelete = task.taskId;
+    return (this.taskIdDelete = task.taskId);
   }
 
   public excluirTarefaById(task: any): void {
     this.isLoadingModal = true;
 
-    this.tasksServices.excluirTarefa(this?.taskIdDelete, this.user?.id)
+    this.tasksServices
+      .excluirTarefa(this?.taskIdDelete, this.user?.id)
       .pipe(
         finalize(() => {
           this.isLoadingModal = false;
           this.cdr.detectChanges();
-        })
+        }),
       )
       .subscribe({
         next: () => {
@@ -276,10 +266,9 @@ export class PaginaTarefas {
         },
         error: (err: HttpErrorResponse) => {
           this.tratarErro(err);
-        }
-      })
+        },
+      });
   }
-
 
   private tratarErro(err: HttpErrorResponse): void {
     if (err.status === 0) {
@@ -316,9 +305,9 @@ export class PaginaTarefas {
   }
 
   statusTaskMap: Record<string, number> = {
-    'COMPLETO': StatusTaskEnum.COMPLETO,
+    COMPLETO: StatusTaskEnum.COMPLETO,
     'EM ANDAMENTO': StatusTaskEnum.EM_ANDAMENTO,
     'A FAZER': StatusTaskEnum.A_FAZER,
-    'ATRASADO': StatusTaskEnum.ATRASADO
+    ATRASADO: StatusTaskEnum.ATRASADO,
   };
 }

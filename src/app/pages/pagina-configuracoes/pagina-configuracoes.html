@@ -1,0 +1,118 @@
+<div class="config_page">
+  <app-navbar-component />
+  <main class="config_page--content">
+    <div>
+      <p class="font-bold text-[30px]">Configurações do sistema</p>
+    </div>
+    <div class="config_page--content--dados">
+      <form
+        class="config_page--content--dados--form flex flex-col gap-[40px]"
+        #ngFormUserData="ngForm"
+      >
+        <div>
+          <app-label-component class="text-[24px]" text="Nome:" for="nomeUser" />
+          <input
+            class=""
+            type="text"
+            name="nome"
+            id="nomeUser"
+            [matTooltip]="user.nome || 'Não informada'"
+            matTooltipPosition="right"
+            [(ngModel)]="user.nome"
+          />
+        </div>
+        <div>
+          <app-label-component class="text-[24px]" text="Email:" for="emailUser" />
+          <input
+            class=""
+            type="text"
+            name="email"
+            id="emailUser"
+            [matTooltip]="user.email || 'Não informada'"
+            matTooltipPosition="right"
+            [(ngModel)]="user.email"
+          />
+        </div>
+        <div>
+          <app-label-component class="text-[24px]" text="Telefone:" for="telefoneUser" />
+          <input
+            class=""
+            type="text"
+            name="telefone"
+            id="telefoneUser"
+            [matTooltip]="user.telefone || 'Não informada'"
+            matTooltipPosition="right"
+            [(ngModel)]="user.telefone"
+          />
+        </div>
+        <div class="flex gap-[70px]">
+          <button
+            class="config_page--content--dados--form--button atualizar"
+            (click)="atualizarDadosUser()"
+          >
+            Atualizar dados
+          </button>
+          <button
+            type="button"
+            class="config_page--content--dados--form--button alterar_senha"
+            (click)="abrirModalAlterarSenha()"
+          >
+            Alterar minha senha
+          </button>
+        </div>
+      </form>
+    </div>
+    <app-modal
+      [isVisible]="isModalAlterarSenha"
+      title="Alterar senha"
+      (close)="abrirModalAlterarSenha()"
+    >
+      <div class="flex flex-col">
+        <form class="modal_form" #ngFormEditPassword="ngForm">
+          <div class="modal_form--campos flex flex-col items-center">
+            <app-label-component
+              class="text-[16px]"
+              text="Digite sua nova senha:"
+              for="novaSenhaUser"
+              [required]="true"
+            />
+            <div class="flex">
+              <input
+                class="campo_input w-[200px]"
+                id="novaSenhaUser"
+                name="novaSenha"
+                [(ngModel)]="novaSenha"
+                [type]="mostrarSenha ? 'text' : 'password'"
+              />
+              <button type="button" class="toggle-senha" (click)="toggleSenha()">
+                <fa-icon
+                  class="icon"
+                  [matTooltip]="mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'"
+                  matTooltipPosition="right"
+                  [icon]="mostrarSenha ? faEyeSlash : faEye"
+                ></fa-icon>
+              </button>
+            </div>
+          </div>
+          <div class="modal_form--button">
+            <button
+              class="modal_form--button--alterar_senha"
+              type="submit"
+              (click)="atualizarSenhaUser()"
+            >
+              Alterar senha
+            </button>
+          </div>
+        </form>
+      </div>
+    </app-modal>
+    <app-modal
+      [isVisible]="isModalSucessoAberto"
+      title="Sucesso"
+      [sucess]="true"
+      (close)="isModalSucessoAberto = false"
+    >
+      {{ mensagemSucesso }}
+    </app-modal>
+  </main>
+</div>
