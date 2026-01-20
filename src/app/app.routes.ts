@@ -5,6 +5,7 @@ import { PaginaRegistro } from './pages/pagina-registro/pagina-registro';
 import { PaginaTarefas } from './pages/pagina-tarefas/pagina-tarefas';
 import { LoginGuard } from './guards/login-guard';
 import { AuthGuard } from './guards/auth-guard';
+import {PaginaConfiguracoes} from './pages/pagina-configuracoes/pagina-configuracoes';
 
 export const routes: Routes = [
   {
@@ -29,6 +30,10 @@ export const routes: Routes = [
   {
     path: 'tarefas',
     component: PaginaTarefas,
+  },
+  {
+    path: 'configuracoes',
+    component: PaginaConfiguracoes,
   },
   {
     path: '**',

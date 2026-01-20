@@ -42,6 +42,11 @@
         <button class="botaoLogar" type="submit">Logar</button>
         <button class="botaoRegistrar" type="button" (click)="registrarUser()">Registrar</button>
       </div>
+      <div
+        class="formulario--forget_password flex justify-center p-[40px] text-[16px] text-blue-500"
+      >
+        <button type="button" (click)="togleViewModalForgetPassword()">Esqueci minha senha</button>
+      </div>
     </form>
   </div>
   <app-loading-component [isLoading]="isLoadingModal"></app-loading-component>
@@ -60,5 +65,45 @@
     [error]="true"
   >
     <p>{{ erroMensagem }}</p>
+  </app-modal>
+  <app-modal
+    [isVisible]="isModalEsqueciSenha"
+    title="Cadastrar nova senha"
+    (close)="isModalEsqueciSenha = false"
+  >
+    <form
+      class="form_alterar_senha flex flex-col items-center"
+      #formSenha="ngForm"
+      (ngSubmit)="alterarSenha()"
+    >
+      <div class="form_alterar_senha--campos">
+        <app-label-component
+          class="text-[17px]"
+          text="Digite sua nova senha"
+          for="newUserPassword"
+          [required]="true"
+        />
+        <div>
+          <input
+            class="w-[200px]"
+            [type]="mostrarSenha ? 'text' : 'password'"
+            id="newUserPassword"
+            name="novaSenha"
+            [(ngModel)]="novaSenha"
+          />
+          <button type="button" (click)="togleViewPassword()">
+            <fa-icon
+              class="eye-icon icon"
+              [matTooltip]="mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'"
+              matTooltipPosition="right"
+              [icon]="mostrarSenha ? faEyeSlash : faEye"
+            ></fa-icon>
+          </button>
+        </div>
+      </div>
+      <div class="form_alterar_senha--button_alterar flex justify-center">
+        <button type="submit">Alterar senha</button>
+      </div>
+    </form>
   </app-modal>
 </main>
