@@ -169,14 +169,14 @@ export class PaginaTarefas {
   editarTask() {
     this.isLoadingModal = true;
 
-    const statusNumerico = this.verificarAtraso(this.task);
+    const statusFormatado = this.verificarAtraso(this.task);
+    const statusNumerico = this.statusTaskMap[statusFormatado];
 
     if (statusNumerico === undefined) {
       alert('Status inválido');
       this.isLoadingModal = false;
       return;
     }
-
     const payload = {
       ...this.task,
       tiposTasks: statusNumerico,
