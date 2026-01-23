@@ -1,7 +1,7 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {catchError, Observable, throwError} from 'rxjs';
-import {environment} from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { catchError, Observable, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +9,7 @@ import {environment} from '../../../environments/environment';
 export class TasksServices {
   private readonly apiUrlKey = `${environment.apiUrl}/tarefas`;
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   buscarTarefasByUserId(userId: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrlKey}/all_tasks/${userId}`);
@@ -20,61 +19,62 @@ export class TasksServices {
     return this.http.get<any>(`${this.apiUrlKey}/get_tasks_count_by_user/${userId}`);
   }
 
+  buscarTaskAtrasadasByUserId(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrlKey}/get_all_late_task/${userId}`);
+  }
+
+  buscarQuantidadeTasksAtrasadasByUserId(userId: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrlKey}/get_late_tasks_count_by_user/${userId}`);
+  }
+
   criarNovaTask(task: any): Observable<any> {
-    return this.http
-      .post(`${this.apiUrlKey}/add_task`, task)
-      .pipe(
-        catchError((err) => {
-          let mensagemErro = 'Erro ao cadastrar uma nova tarefa';
+    return this.http.post(`${this.apiUrlKey}/add_task`, task).pipe(
+      catchError((err) => {
+        let mensagemErro = 'Erro ao cadastrar uma nova tarefa';
 
-          if (err.status === 401 || err.status === 404) {
-            mensagemErro = err?.error?.message ?? mensagemErro;
-          }
+        if (err.status === 401 || err.status === 404) {
+          mensagemErro = err?.error?.message ?? mensagemErro;
+        }
 
-          return throwError(() => ({
-            status: err.status,
-            mensagemErro
-          }));
-        })
-      );
+        return throwError(() => ({
+          status: err.status,
+          mensagemErro,
+        }));
+      }),
+    );
   }
 
   editarTask(userId: number, taskUpdate: any): Observable<any> {
-    return this.http
-      .put(`${this.apiUrlKey}/update_user/${userId}`, taskUpdate)
-      .pipe(
-        catchError((err) => {
-          let mensagemErro = 'Erro ao atualizar uma tarefa';
+    return this.http.put(`${this.apiUrlKey}/update_user/${userId}`, taskUpdate).pipe(
+      catchError((err) => {
+        let mensagemErro = 'Erro ao atualizar uma tarefa';
 
-          if (err.status === 401 || err.status === 404) {
-            mensagemErro = err?.error?.message ?? mensagemErro;
-          }
+        if (err.status === 401 || err.status === 404) {
+          mensagemErro = err?.error?.message ?? mensagemErro;
+        }
 
-          return throwError(() => ({
-            status: err.status,
-            mensagemErro
-          }))
-        })
-      )
+        return throwError(() => ({
+          status: err.status,
+          mensagemErro,
+        }));
+      }),
+    );
   }
 
   excluirTarefa(idTask: number, userId: number) {
-    return this.http
-      .delete(`${this.apiUrlKey}/delete_task/${idTask}/${userId}`)
-      .pipe(
-        catchError((err) => {
-          let mensagemDeErro = 'Erro ao tentar excluir sua tarefa';
+    return this.http.delete(`${this.apiUrlKey}/delete_task/${idTask}/${userId}`).pipe(
+      catchError((err) => {
+        let mensagemDeErro = 'Erro ao tentar excluir sua tarefa';
 
-          if (err.status === 401 || err.status === 404) {
-            mensagemDeErro = err?.error?.message ?? mensagemDeErro;
-          }
+        if (err.status === 401 || err.status === 404) {
+          mensagemDeErro = err?.error?.message ?? mensagemDeErro;
+        }
 
-          return throwError(() => ({
-            status: err.status,
-            mensagemDeErro
-          }));
-        })
-      )
+        return throwError(() => ({
+          status: err.status,
+          mensagemDeErro,
+        }));
+      }),
+    );
   }
-
 }
