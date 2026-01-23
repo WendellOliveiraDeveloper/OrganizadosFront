@@ -1,5 +1,5 @@
 <div class="task_page">
-  <app-navbar-component/>
+  <app-navbar-component />
   <main class="task_page--content">
     <div class="task_page--content--qtd_tarefas">
       @if (qtdTasks <= 0) {
@@ -13,26 +13,30 @@
       <div class="task_page--content--all_tasks">
         <div class="task_page--content--all_tasks--remove_icon">
           <button (click)="excluirTarefaById(taskIdDelete)">
-            <img [src]="iconDelete" alt="Simbolo de lixeira"/>
+            <img [src]="iconDelete" alt="Simbolo de lixeira" />
           </button>
         </div>
         <div class="task_page--content--all_tasks--table-scroll">
           <table class="task_page--content--all_tasks--table">
             <thead>
-            <tr class="text-[25px]">
-              <th></th>
-              @for (title of tituloTabela; track $index) {
-                <th>{{ title.name }}</th>
-              }
-            </tr>
+              <tr class="text-[25px]">
+                <th></th>
+                @for (title of tituloTabela; track $index) {
+                  <th>{{ title.name }}</th>
+                }
+              </tr>
             </thead>
 
             <tbody class="task_page--content--all_tasks--table--tbody">
               @for (task of allTasks; track $index) {
-                <tr>
+                <tr [matTooltip]="`Descrição: ${task.descricaoTarefa}`" matTooltipPosition="above">
                   <td>
-                    <input class="checkbox-round" type="checkbox" [ngModel]="task.checked"
-                           (click)="armazenaTaskId(task)"/>
+                    <input
+                      class="checkbox-round"
+                      type="checkbox"
+                      [ngModel]="task.checked"
+                      (click)="armazenaTaskId(task)"
+                    />
                   </td>
                   <td (click)="editarTarefa($index)">{{ task.nomeTarefa }}</td>
                   <td (click)="editarTarefa($index)">{{ task.dataTarefa }}</td>
@@ -47,13 +51,12 @@
           </table>
         </div>
       </div>
-
     } @else {
       <p class="text-[20px] p-[70px]">Você não tem nenhuma tarefa registrada no sistema</p>
     }
     <div class="task_page--content--all_tasks--add_icon flex justify-end">
       <button (click)="abrirModalCriarTask()">
-        <img [src]="iconAdicionar" alt="simbolo de mais"/>
+        <img [src]="iconAdicionar" alt="simbolo de mais" />
       </button>
     </div>
   </main>
@@ -130,7 +133,7 @@
           />
         </div>
         <div class="modal_task_content--campos">
-          <app-label-component class="text-[18px]" text="Status:" for="statusTarefa"/>
+          <app-label-component class="text-[18px]" text="Status:" for="statusTarefa" />
           <input
             class="modal_task_content--campos--inp"
             type="text"
@@ -152,19 +155,24 @@
               Salvar
             </button>
           } @else {
-            <button class="modal_task_content--buttons--edit" type="submit" (click)="criarNovaTask()">
+            <button
+              class="modal_task_content--buttons--edit"
+              type="submit"
+              (click)="criarNovaTask()"
+            >
               Criar tarefa
             </button>
           }
           <Button
             class="modal_task_content--buttons--cancel"
             type="button"
-            (click)="isModalEditarAberto = false">
+            (click)="isModalEditarAberto = false"
+          >
             Cancelar
           </Button>
         </div>
       </form>
     </div>
   </app-modal>
-  <app-loading-component [isLoading]="isLoadingModal"/>
+  <app-loading-component [isLoading]="isLoadingModal" />
 </div>

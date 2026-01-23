@@ -89,7 +89,7 @@ export class PaginaTarefas {
   public verificarAtraso(task: any): string {
     if (!task?.dataTarefa) return task.tiposTasks;
 
-    const [dia, mes, ano] = task.dataTarefa.split('/');
+    const [ano, mes, dia] = task.dataTarefa.split('-');
     const dataTask = new Date(Number(ano), Number(mes) - 1, Number(dia));
 
     const hoje = new Date();
@@ -169,8 +169,21 @@ export class PaginaTarefas {
   editarTask() {
     this.isLoadingModal = true;
 
+    const statusNumerico = this.verificarAtraso(this.task);
+
+    if (statusNumerico === undefined) {
+      alert('Status inválido');
+      this.isLoadingModal = false;
+      return;
+    }
+
+    const payload = {
+      ...this.task,
+      tiposTasks: statusNumerico,
+    };
+
     this.tasksServices
-      .editarTask(this.user?.id, this.task)
+      .editarTask(this.user?.id, payload)
       .pipe(
         finalize(() => {
           this.isLoadingModal = false;
@@ -178,11 +191,10 @@ export class PaginaTarefas {
         }),
       )
       .subscribe({
-        next: (res) => {
+        next: () => {
           this.isModalEditarAberto = false;
           this.mensagemSucesso = 'Edição realizada com sucesso!';
           this.isModalSucessoAberto = true;
-
           this.buscarTarefasByUser();
         },
         error: (err: HttpErrorResponse) => {

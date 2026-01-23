@@ -1,1 +1,38 @@
-<app-navbar-component></app-navbar-component>
+<div class="principal_page">
+  <app-navbar-component></app-navbar-component>
+  <main class="principal_page--content">
+    <div class="flex">
+      <span class="text-[40px] font-bold">Suas notícias!</span>
+    </div>
+    @if (qtdTasksAtrasadas > 0) {
+      <div class="flex text-[20px] font-bold principal_page--content--notices">
+        <p>Você tem {{ qtdTasksAtrasadas }} tarefas atrasadas!</p>
+        <fa-icon class="icon text-red-700" [icon]="faCicleExclamationIcon" />
+      </div>
+      <div class="principal_page--content--cards flex gap-[20px]">
+        @for (item of tasks; track $index) {
+          <app-cards-component [title]="item.nomeTarefa">
+            <div class="flex flex-col gap-[20px]">
+              <p><span class="font-bold"> Descrição tarefa: </span> {{ item.descricaoTarefa }}</p>
+              <p><span class="font-bold">Data da tarefa: </span> {{ item.dataTarefa }}</p>
+              <p><span class="font-bold">Situação:</span> {{ item.tiposTasks }}</p>
+            </div>
+          </app-cards-component>
+        }
+      </div>
+    } @else {
+      <div class="text-[20px] font-bold">
+        <p>Você não possui tarefas atrasadas!</p>
+      </div>
+    }
+  </main>
+  <app-modal
+    [isVisible]="isModalErroAberto"
+    title="Erro Inesperado!"
+    [error]="true"
+    (close)="isModalErroAberto = false"
+  >
+    {{ msgErro }}
+  </app-modal>
+  <app-loading-component [isLoading]="isModalLoading" />
+</div>
