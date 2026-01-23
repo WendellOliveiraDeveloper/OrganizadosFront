@@ -67,3 +67,14 @@ main {
     }
   }
 }
+
+.icon-eye {
+  position: absolute;
+  right: 447px;
+  bottom: 225px;
+
+  @media screen and (min-height: 900px) {
+    right: 767px;
+    bottom: 535px;
+  }
+}

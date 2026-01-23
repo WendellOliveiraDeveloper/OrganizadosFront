@@ -7,10 +7,23 @@ import { LabelComponent } from '../../components/label-component/label-component
 import { Modal } from '../../components/modal/modal';
 import { LoadingComponent } from '../../components/loading-component/loading-component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-pagina-registro',
-  imports: [LabelComponent, CommonModule, FormsModule, Modal, LoadingComponent],
+  imports: [
+    LabelComponent,
+    CommonModule,
+    FormsModule,
+    Modal,
+    LoadingComponent,
+    MatTooltipModule,
+    FontAwesomeModule,
+    FaIconComponent,
+  ],
   templateUrl: './pagina-registro.html',
   styleUrl: './pagina-registro.scss',
 })
@@ -24,12 +37,19 @@ export class PaginaRegistro {
   erroMensagem: string = '';
   mensagemSucesso: string = '';
   isLoadingModal: boolean = false;
+  mostrarSenha: boolean = false;
+  faEye = faEye;
+  faEyeSlash = faEyeSlash;
 
   constructor(
     private registraUserService: RegistraUser,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
+
+  mostrarIcon() {
+    this.mostrarSenha = !this.mostrarSenha;
+  }
 
   voltarPaginaLogin() {
     this.router.navigate(['/login']);

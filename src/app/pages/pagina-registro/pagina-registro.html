@@ -6,7 +6,12 @@
     <div class="formulario flex justify-center">
       <form (ngSubmit)="enviaRegistro()" #form="ngForm">
         <div class="campos">
-          <app-label-component class="campos--label" text="Nome" for="nomeRegistro" [required]="true" />
+          <app-label-component
+            class="campos--label"
+            text="Nome"
+            for="nomeRegistro"
+            [required]="true"
+          />
           <input
             class="campos--input bg-white h-[30px]"
             type="text"
@@ -17,7 +22,12 @@
           />
         </div>
         <div class="campos">
-          <app-label-component class="campos--label" text="Email" for="emailRegistro" [required]="true" />
+          <app-label-component
+            class="campos--label"
+            text="Email"
+            for="emailRegistro"
+            [required]="true"
+          />
           <input
             class="campos--input bg-white h-[30px]"
             type="email"
@@ -39,15 +49,25 @@
           />
         </div>
         <div class="campos">
-          <app-label-component class="campos--label" text="Senha" for="senhaRegistro" [required]="true" />
-          <input
-            class="campos--input bg-white h-[30px]"
-            type="password"
-            [(ngModel)]="senha"
-            name="senha"
-            id="senhaRegistro"
-            required
+          <app-label-component
+            class="campos--label"
+            text="Senha"
+            for="senhaRegistro"
+            [required]="true"
           />
+          <div>
+            <input
+              class="campos--input bg-white h-[30px]"
+              [type]="mostrarSenha ? 'text' : 'password'"
+              [(ngModel)]="senha"
+              name="senha"
+              id="senhaRegistro"
+              required
+            />
+            <button class="icon-eye" type="button" (click)="mostrarIcon()">
+              <fa-icon class="icon" [icon]="mostrarSenha ? faEye : faEyeSlash"></fa-icon>
+            </button>
+          </div>
         </div>
         <div class="botao flex w-[100%]">
           <button class="botao--registrar" type="submit">Registrar</button>
